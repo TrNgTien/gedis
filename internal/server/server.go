@@ -2,17 +2,23 @@ package server
 
 import (
 	"fmt"
-	"io"
-	"log"
 	"net"
 	"os"
 )
 
+func responseCmd() {
+	// TODO
+}
+
+func parseCmd() {
+	// TODO
+}
+
 func RunAsyncServer() {
-	l, err := net.Listen("tcp", "0.0.0.0:6377")
+	l, err := net.Listen("tcp", "0.0.0.0:6379")
 
 	if err != nil {
-		fmt.Println("Failed to bind to port 6377")
+		fmt.Println("Failed to bind to port 6379")
 		os.Exit(1)
 	}
 
@@ -26,18 +32,21 @@ func RunAsyncServer() {
 
 		defer conn.Close()
 
-		buf := make([]byte, 1024)
-		addr := conn.RemoteAddr().String()
-		length, err := conn.Read(buf)
-		if err == io.EOF {
-			log.Printf("[%s] Connection Closed\n", addr)
-			return
-		} else if err != nil {
-			log.Printf("Error reading: %#v\n", err)
-			return
-		}
+		// buf := make([]byte, 1024)
+		// addr := conn.RemoteAddr().String()
+		// length, err := conn.Read(buf)
+		// if err == io.EOF {
+		// 	log.Printf("[%s] Connection Closed\n", addr)
+		// 	return
+		// } else if err != nil {
+		// 	log.Printf("Error reading: %#v\n", err)
+		// 	return
+		// }
 
-		rawMessage := string(buf[:length])
-		fmt.Println("rawMessage: ", rawMessage)
+		// rawMessage := string(buf[:length])
+		// fmt.Println("rawMessage: ", rawMessage)
+		// ignore request and send back a PONG
+		fmt.Println("Accepted connection from ", conn.RemoteAddr().String())
+		conn.Write([]byte("+OK\r\n"))
 	}
 }
